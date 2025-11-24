@@ -168,34 +168,38 @@
 
         #status {
             margin-top: 10px;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             display: none;
+            font-weight: 500;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         #status.success {
             background: #d4edda;
             color: #155724;
+            border: 2px solid #28a745;
             display: block;
         }
 
         #status.error {
             background: #f8d7da;
             color: #721c24;
+            border: 2px solid #dc3545;
             display: block;
-        }
-
-        footer {
-            text-align: center;
-            color: white;
-            padding: 20px;
-            font-size: 0.9rem;
-            margin-top: 40px;
-        }
-
-        small {
-            color: #999;
-            font-size: 0.85rem;
         }
     </style>
 </head>
@@ -277,9 +281,9 @@
                 <form id="stakeForm">
                     <div class="input-group">
                         <label for="stakeAmount">Amount (BTC)</label>
-                        <input type="number" id="stakeAmount" step="0.00000001" min="0" placeholder="0.00000000"
-                            required />
-                        <small>Min: 0.00000001 BTC (1,000 sats)</small>
+                        <input type="number" id="stakeAmount" step="0.00000001" min="0.00000001" max="21000000"
+                            placeholder="0.00000000" required />
+                        <small style="color: #999;">Min: 0.00000001 BTC | Max: 21M BTC</small>
                     </div>
                     <button type="submit">Stake BTC → Get stBTC</button>
                     <div class="info-box" id="stakePreview" style="display:none;">
@@ -364,9 +368,15 @@
             const status = document.getElementById('status');
             status.textContent = message;
             status.className = type;
+            status.style.display = 'block';
+
+            // Different durations based on message type
+            const duration = type === 'success' ? 8000 : 5000; // Success shows longer
+
             setTimeout(() => {
                 status.style.display = 'none';
-            }, 5000);
+                status.className = '';
+            }, duration);
         }
 
         // ===== LOAD STATS =====
@@ -498,6 +508,14 @@
                 return;
             }
 
+            //balance checker 
+            const currentBalance = parseFloat(document.getElementById('userStBTC').textContent);
+
+            if (amountBTC > currentBalance) {
+                showStatus(`❌ Insufficient balance. You have ${currentBalance.toFixed(8)} stBTC`, 'error');
+                return;
+            }
+
             const amountSats = btcToSats(amountBTC);
 
             console.log("Unstaking", amountSats, "sats");
@@ -612,7 +630,7 @@
             }
         };
 
-        // ===== INITIALIZE =====
+        // ===== INITIALISE =====
 
         console.log("Initializing app...");
 
