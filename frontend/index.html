@@ -205,6 +205,40 @@
         <header>
             <h1>🌊 LiquidBTC</h1>
             <p>Stake Bitcoin. Keep Liquidity. Earn Yield.</p>
+            <!-- Demo Instructions -->
+            <div class="card"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 30px;">
+                <h2 style="color: white; margin-bottom: 15px;">📖 How to Use This Demo</h2>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">1️⃣</div>
+                        <strong>Stake Bitcoin</strong>
+                        <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">
+                            Enter amount → Get stBTC 1:1
+                        </p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">2️⃣</div>
+                        <strong>Fast-Forward Time</strong>
+                        <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">
+                            Simulate 30+ days to see rewards accrue
+                        </p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">3️⃣</div>
+                        <strong>Unstake & Profit</strong>
+                        <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">
+                            Burn stBTC → Get more BTC back!
+                        </p>
+                    </div>
+                </div>
+                <div
+                    style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.15); border-radius: 8px; border-left: 4px solid #fff;">
+                    <strong>💡 Key Feature:</strong> Your stBTC stays liquid! Trade it, lend it, or unstake anytime - no
+                    6-month lockup like traditional staking.
+                </div>
+            </div>
         </header>
 
         <!-- Stats Dashboard -->
@@ -312,8 +346,7 @@
         // This allows demo to work without login
         let userPrincipal = Principal.anonymous();
 
-        // Alternative: Use a fixed test Principal for demo
-        // userPrincipal = Principal.fromText("2vxsx-fae-ug4qb-qaaaa-aaaaa-qaaca-cai");
+
 
         console.log("Using Principal:", userPrincipal.toText());
 
@@ -378,6 +411,8 @@
 
         // ===== STAKE FORM =====
 
+        // ===== STAKE FORM =====
+
         document.getElementById('stakeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -394,30 +429,46 @@
 
             try {
                 const button = e.target.querySelector('button');
+                const input = document.getElementById('stakeAmount');
                 button.disabled = true;
-                button.textContent = 'Staking...';
+                input.disabled = true;
+                button.textContent = '⏳ Staking...';
 
                 const result = await backend.stake(amountSats);
                 console.log("Stake result:", result);
 
                 if ('ok' in result) {
-                    showStatus('✅ ' + result.ok, 'success');
+                    // Enhanced success message
+                    showStatus(
+                        `✅ Successfully staked ${amountBTC.toFixed(8)} BTC! You received ${amountBTC.toFixed(8)} stBTC`,
+                        'success'
+                    );
+
                     document.getElementById('stakeAmount').value = '';
                     document.getElementById('stakePreview').style.display = 'none';
 
-                    // Wait a moment then refresh
+                    // Immediate UI update with animation
+                    const stBTCElement = document.getElementById('userStBTC');
+                    stBTCElement.style.transition = 'all 0.3s ease';
+                    stBTCElement.style.transform = 'scale(1.2)';
+                    stBTCElement.style.color = '#667eea';
+
                     setTimeout(async () => {
                         await loadStats();
-                    }, 500);
+                        stBTCElement.style.transform = 'scale(1)';
+                        stBTCElement.style.color = '';
+                    }, 300);
                 } else {
                     showStatus('❌ ' + result.err, 'error');
                 }
             } catch (error) {
                 console.error('Stake error:', error);
-                showStatus('❌ Error: ' + error.message, 'error');
+                showStatus('❌ Transaction failed: ' + error.message, 'error');
             } finally {
                 const button = e.target.querySelector('button[type="submit"]');
+                const input = document.getElementById('stakeAmount');
                 button.disabled = false;
+                input.disabled = false;
                 button.textContent = 'Stake BTC → Get stBTC';
             }
         });
@@ -432,6 +483,8 @@
                 document.getElementById('stakePreview').style.display = 'none';
             }
         });
+
+        // ===== UNSTAKE FORM =====
 
         // ===== UNSTAKE FORM =====
 
@@ -451,31 +504,49 @@
 
             try {
                 const button = e.target.querySelector('button[type="submit"]');
+                const input = document.getElementById('unstakeAmount');
                 button.disabled = true;
-                button.textContent = 'Unstaking...';
+                input.disabled = true;
+                button.textContent = '⏳ Unstaking...';
 
                 const result = await backend.unstake(amountSats);
                 console.log("Unstake result:", result);
 
                 if ('ok' in result) {
                     const btcReceived = satsToBTC(result.ok);
-                    showStatus(`✅ Unstaked! Received ${btcReceived} BTC`, 'success');
+                    const profit = (parseFloat(btcReceived) - amountBTC).toFixed(8);
+
+                    // Enhanced success message with profit calculation
+                    showStatus(
+                        `✅ Unstaked ${amountBTC.toFixed(8)} stBTC! Received ${btcReceived} BTC (Profit: +${profit} BTC)`,
+                        'success'
+                    );
+
                     document.getElementById('unstakeAmount').value = '';
                     document.getElementById('unstakePreview').style.display = 'none';
 
-                    // Wait a moment then refresh
+                    // Animate the BTC value update
+                    const btcValueElement = document.getElementById('userBTCValue');
+                    btcValueElement.style.transition = 'all 0.3s ease';
+                    btcValueElement.style.transform = 'scale(1.2)';
+                    btcValueElement.style.color = '#4CAF50';
+
                     setTimeout(async () => {
                         await loadStats();
-                    }, 500);
+                        btcValueElement.style.transform = 'scale(1)';
+                        btcValueElement.style.color = '';
+                    }, 300);
                 } else {
                     showStatus('❌ ' + result.err, 'error');
                 }
             } catch (error) {
                 console.error('Unstake error:', error);
-                showStatus('❌ Error: ' + error.message, 'error');
+                showStatus('❌ Transaction failed: ' + error.message, 'error');
             } finally {
                 const button = e.target.querySelector('button[type="submit"]');
+                const input = document.getElementById('unstakeAmount');
                 button.disabled = false;
+                input.disabled = false;
                 button.textContent = 'Unstake stBTC → Get BTC';
             }
         });
@@ -552,7 +623,10 @@
         setInterval(loadStats, 10000);
 
         console.log("App initialized!");
-    </script>
+    </script> // ===== UNSTAKE FORM =====
+
+    document.getElementById('unstakeForm').addEventListener('submit', async (e) => {
+
 </body>
 
 </html>
