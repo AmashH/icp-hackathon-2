@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌊 LiquidBTC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            background: #f7f9fc;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            color: #1976d2;
+        }
+        
+        .balance-display {
+            background: #f7f9fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .balance-display div {
+            margin: 8px 0;
+            color: #666;
+        }
+        
+        .demo-card {
+            text-align: center;
+        }
+        
+        .demo-btn {
+            background: #ff6b6b;
+        }
+        
+        .demo-btn:hover {
+            background: #ee5a5a;
+        }
+        
+        #status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        #status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        #status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        
+        small {
+            color: #999;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌊 LiquidBTC</h1>
+            <p>Stake Bitcoin. Keep Liquidity. Earn Yield.</p>
+        </header>
+
+        <!-- Stats Dashboard -->
+        <div class="card">
+            <h2>Protocol Stats</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Staked</div>
+                    <div class="stat-value" id="totalStaked">0</div>
+                    <small>BTC</small>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Total stBTC Supply</div>
+                    <div class="stat-value" id="totalSupply">0</div>
+                    <small>stBTC</small>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Exchange Rate</div>
+                    <div class="stat-value" id="exchangeRate">1.000000</div>
+                    <small>1 stBTC = X BTC</small>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">APY</div>
+                    <div class="stat-value" id="apy">10.00</div>
+                    <small>%</small>
+                </div>
+            </div>
+            <button onclick="loadStats()">🔄 Refresh Stats</button>
+        </div>
+
+        <!-- Stake & Unstake Forms -->
+        <div class="forms-grid">
+            <!-- Stake Form -->
+            <div class="card">
+                <h2>💰 Stake Bitcoin</h2>
+                <form id="stakeForm">
+                    <div class="input-group">
+                        <label for="stakeAmount">Amount (BTC)</label>
+                        <input 
+                            type="number" 
+                            id="stakeAmount" 
+                            step="0.00000001" 
+                            min="0"
+                            placeholder="0.00000000"
+                            required
+                        />
+                        <small>Min: 0.00000001 BTC (1,000 sats)</small>
+                    </div>
+                    <button type="submit">Stake BTC → Get stBTC</button>
+                    <div class="info-box" id="stakePreview" style="display:none;">
+                        You will receive <strong><span id="stakeReceive">0</span> stBTC</strong>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Unstake Form -->
+            <div class="card">
+                <h2>💸 Unstake stBTC</h2>
+                <div class="balance-display">
+                    <div>Your stBTC: <strong id="userStBTC">0</strong></div>
+                    <div>Worth: <strong id="userBTCValue">0</strong> BTC</div>
+                </div>
+                <form id="unstakeForm">
+                    <div class="input-group">
+                        <label for="unstakeAmount">Amount (stBTC)</label>
+                        <input 
+                            type="number" 
+                            id="unstakeAmount" 
+                            step="0.00000001" 
+                            min="0"
+                            placeholder="0.00000000"
+                            required
+                        />
+                        <button type="button" onclick="setMaxUnstake()">MAX</button>
+                    </div>
+                    <button type="submit">Unstake stBTC → Get BTC</button>
+                    <div class="info-box" id="unstakePreview" style="display:none;">
+                        You will receive approximately <strong><span id="unstakeReceive">0</span> BTC</strong>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Demo Controls -->
+        <div class="card demo-card">
+            <h2>⏭️ Demo: Simulate Time</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Fast-forward time to see rewards accrue
+            </p>
+            <div class="input-group">
+                <label for="daysToSimulate">Number of Days</label>
+                <input 
+                    type="number" 
+                    id="daysToSimulate" 
+                    value="30" 
+                    min="1"
+                    max="365"
+                />
+            </div>
+            <button class="demo-btn" onclick="simulateTime()">
+                ⏩ Fast-Forward Time
+            </button>
+        </div>
+
+        <!-- Status Messages -->
+        <div id="status"></div>
+
+        <footer>
+            <p>Built on Internet Computer Protocol</p>
+            <p style="opacity: 0.8; margin-top: 10px; font-size: 0.85rem;">
+                MVP Demo - Rewards are simulated. Production will integrate with Babylon Protocol.
+            </p>
+        </footer>
+    </div>
+
+    <script type="module">
+        import { backend } from 'declarations/backend';
+        
+        // ===== HELPER FUNCTIONS =====
+        
+        function satsToBTC(sats) {
+            return (sats / 100000000).toFixed(8);
+        }
+        
+        function btcToSats(btc) {
+            return Math.floor(btc * 100000000);
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = type;
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+        
+        // ===== LOAD STATS =====
+        
+        window.loadStats = async function() {
+            try {
+                const stats = await backend.getStats();
+                
+                document.getElementById('totalStaked').textContent = satsToBTC(stats.totalStaked);
+                document.getElementById('totalSupply').textContent = satsToBTC(stats.totalSupply);
+                document.getElementById('exchangeRate').textContent = stats.exchangeRate.toFixed(6);
+                document.getElementById('apy').textContent = (stats.apy * 100).toFixed(2);
+                
+                // Load user balance
+                await loadUserBalance();
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                showStatus('Error loading stats: ' + error.message, 'error');
+            }
+        };
+        
+        async function loadUserBalance() {
+            try {
+                // Get current principal (user identity)
+                const principal = await window.ic.plug?.agent?.getPrincipal() || 
+                                await backend.__principal;
+                
+                if (principal) {
+                    const balance = await backend.getBalance(principal);
+                    const btcValue = await backend.getBTCValue(principal);
+                    
+                    document.getElementById('userStBTC').textContent = satsToBTC(balance);
+                    document.getElementById('userBTCValue').textContent = satsToBTC(btcValue);
+                }
+            } catch (error) {
+                console.error('Error loading user balance:', error);
+            }
+        }
+        
+        // ===== STAKE FORM =====
+        
+        document.getElementById('stakeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const amountBTC = parseFloat(document.getElementById('stakeAmount').value);
+            const amountSats = btcToSats(amountBTC);
+            
+            try {
+                const button = e.target.querySelector('button');
+                button.disabled = true;
+                button.textContent = 'Staking...';
+                
+                const result = await backend.stake(amountSats);
+                
+                if ('ok' in result) {
+                    showStatus('✅ ' + result.ok, 'success');
+                    document.getElementById('stakeAmount').value = '';
+                    await loadStats();
+                } else {
+                    showStatus('❌ ' + result.err, 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Error: ' + error.message, 'error');
+            } finally {
+                const button = e.target.querySelector('button');
+                button.disabled = false;
+                button.textContent = 'Stake BTC → Get stBTC';
+            }
+        });
+        
+        // Show preview when amount changes
+        document.getElementById('stakeAmount').addEventListener('input', (e) => {
+            const amount = e.target.value;
+            if (amount && amount > 0) {
+                document.getElementById('stakeReceive').textContent = parseFloat(amount).toFixed(8);
+                document.getElementById('stakePreview').style.display = 'block';
+            } else {
+                document.getElementById('stakePreview').style.display = 'none';
+            }
+        });
+        
+        // ===== UNSTAKE FORM =====
+        
+        document.getElementById('unstakeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const amountBTC = parseFloat(document.getElementById('unstakeAmount').value);
+            const amountSats = btcToSats(amountBTC);
+            
+            try {
+                const button = e.target.querySelector('button');
+                button.disabled = true;
+                button.textContent = 'Unstaking...';
+                
+                const result = await backend.unstake(amountSats);
+                
+                if ('ok' in result) {
+                    const btcReceived = satsToBTC(result.ok);
+                    showStatus(`✅ Unstaked! Received ${btcReceived} BTC`, 'success');
+                    document.getElementById('unstakeAmount').value = '';
+                    await loadStats();
+                } else {
+                    showStatus('❌ ' + result.err, 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Error: ' + error.message, 'error');
+            } finally {
+                const button = e.target.querySelector('button');
+                button.disabled = false;
+                button.textContent = 'Unstake stBTC → Get BTC';
+            }
+        });
+        
+        // Show preview when amount changes
+        document.getElementById('unstakeAmount').addEventListener('input', async (e) => {
+            const amount = e.target.value;
+            if (amount && amount > 0) {
+                try {
+                    const rate = await backend.getExchangeRate();
+                    const btcWillGet = (parseFloat(amount) * rate).toFixed(8);
+                    document.getElementById('unstakeReceive').textContent = btcWillGet;
+                    document.getElementById('unstakePreview').style.display = 'block';
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                document.getElementById('unstakePreview').style.display = 'none';
+            }
+        });
+        
+        window.setMaxUnstake = function() {
+            const maxAmount = document.getElementById('userStBTC').textContent;
+            document.getElementById('unstakeAmount').value = maxAmount;
+            document.getElementById('unstakeAmount').dispatchEvent(new Event('input'));
+        };
+        
+        // ===== SIMULATE TIME =====
+        
+        window.simulateTime = async function() {
+            const days = parseInt(document.getElementById('daysToSimulate').value);
+            
+            try {
+                const button = event.target;
+                button.disabled = true;
+                button.textContent = 'Simulating...';
+                
+                await backend.simulateRewards(days);
+                showStatus(`✅ Simulated ${days} days of rewards!`, 'success');
+                await loadStats();
+            } catch (error) {
+                showStatus('❌ Error: ' + error.message, 'error');
+            } finally {
+                const button = event.target;
+                button.disabled = false;
+                button.textContent = '⏩ Fast-Forward Time';
+            }
+        };
+        
+        // ===== INITIALIZE =====
+        
+        // Load stats when page loads
+        loadStats();
+        
+        // Refresh every 10 seconds
+        setInterval(loadStats, 10000);
+    </script>
+</body>
+</html>
