@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,91 +11,91 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
         }
-        
+
         header {
             text-align: center;
             color: white;
             margin-bottom: 40px;
         }
-        
+
         header h1 {
             font-size: 3rem;
             margin-bottom: 10px;
         }
-        
+
         header p {
             font-size: 1.2rem;
             opacity: 0.9;
         }
-        
+
         .card {
             background: white;
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
-        
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }
-        
+
         .stat-box {
             background: #f7f9fc;
             padding: 20px;
             border-radius: 12px;
             text-align: center;
         }
-        
+
         .stat-label {
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 10px;
         }
-        
+
         .stat-value {
             font-size: 1.8rem;
             font-weight: bold;
             color: #667eea;
         }
-        
+
         .forms-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
-        
+
         h2 {
             margin-bottom: 20px;
             color: #333;
         }
-        
+
         .input-group {
             margin-bottom: 20px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
             color: #333;
         }
-        
+
         input {
             width: 100%;
             padding: 12px;
@@ -102,12 +103,12 @@
             border-radius: 8px;
             font-size: 1rem;
         }
-        
+
         input:focus {
             outline: none;
             border-color: #667eea;
         }
-        
+
         button {
             width: 100%;
             padding: 14px;
@@ -120,18 +121,18 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         button:hover {
             background: #5568d3;
             transform: translateY(-2px);
         }
-        
+
         button:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
-        
+
         .info-box {
             background: #e3f2fd;
             padding: 12px;
@@ -140,50 +141,50 @@
             text-align: center;
             color: #1976d2;
         }
-        
+
         .balance-display {
             background: #f7f9fc;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        
+
         .balance-display div {
             margin: 8px 0;
             color: #666;
         }
-        
+
         .demo-card {
             text-align: center;
         }
-        
+
         .demo-btn {
             background: #ff6b6b;
         }
-        
+
         .demo-btn:hover {
             background: #ee5a5a;
         }
-        
+
         #status {
             margin-top: 10px;
             padding: 10px;
             border-radius: 8px;
             display: none;
         }
-        
+
         #status.success {
             background: #d4edda;
             color: #155724;
             display: block;
         }
-        
+
         #status.error {
             background: #f8d7da;
             color: #721c24;
             display: block;
         }
-        
+
         footer {
             text-align: center;
             color: white;
@@ -191,13 +192,14 @@
             font-size: 0.9rem;
             margin-top: 40px;
         }
-        
+
         small {
             color: #999;
             font-size: 0.85rem;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -241,14 +243,8 @@
                 <form id="stakeForm">
                     <div class="input-group">
                         <label for="stakeAmount">Amount (BTC)</label>
-                        <input 
-                            type="number" 
-                            id="stakeAmount" 
-                            step="0.00000001" 
-                            min="0"
-                            placeholder="0.00000000"
-                            required
-                        />
+                        <input type="number" id="stakeAmount" step="0.00000001" min="0" placeholder="0.00000000"
+                            required />
                         <small>Min: 0.00000001 BTC (1,000 sats)</small>
                     </div>
                     <button type="submit">Stake BTC → Get stBTC</button>
@@ -268,14 +264,8 @@
                 <form id="unstakeForm">
                     <div class="input-group">
                         <label for="unstakeAmount">Amount (stBTC)</label>
-                        <input 
-                            type="number" 
-                            id="unstakeAmount" 
-                            step="0.00000001" 
-                            min="0"
-                            placeholder="0.00000000"
-                            required
-                        />
+                        <input type="number" id="unstakeAmount" step="0.00000001" min="0" placeholder="0.00000000"
+                            required />
                         <button type="button" onclick="setMaxUnstake()">MAX</button>
                     </div>
                     <button type="submit">Unstake stBTC → Get BTC</button>
@@ -294,13 +284,7 @@
             </p>
             <div class="input-group">
                 <label for="daysToSimulate">Number of Days</label>
-                <input 
-                    type="number" 
-                    id="daysToSimulate" 
-                    value="30" 
-                    min="1"
-                    max="365"
-                />
+                <input type="number" id="daysToSimulate" value="30" min="1" max="365" />
             </div>
             <button class="demo-btn" onclick="simulateTime()">
                 ⏩ Fast-Forward Time
@@ -320,17 +304,29 @@
 
     <script type="module">
         import { backend } from 'declarations/backend';
-        
+        import { Principal } from "@dfinity/principal";
+
+        // ===== GET USER PRINCIPAL =====
+
+        // For MVP: Use anonymous Principal (same for everyone)
+        // This allows demo to work without login
+        let userPrincipal = Principal.anonymous();
+
+        // Alternative: Use a fixed test Principal for demo
+        // userPrincipal = Principal.fromText("2vxsx-fae-ug4qb-qaaaa-aaaaa-qaaca-cai");
+
+        console.log("Using Principal:", userPrincipal.toText());
+
         // ===== HELPER FUNCTIONS =====
-        
+
         function satsToBTC(sats) {
-            return (sats / 100000000).toFixed(8);
+            return (Number(sats) / 100000000).toFixed(8);
         }
-        
+
         function btcToSats(btc) {
-            return Math.floor(btc * 100000000);
+            return Math.floor(Number(btc) * 100000000);
         }
-        
+
         function showStatus(message, type) {
             const status = document.getElementById('status');
             status.textContent = message;
@@ -339,75 +335,93 @@
                 status.style.display = 'none';
             }, 5000);
         }
-        
+
         // ===== LOAD STATS =====
-        
-        window.loadStats = async function() {
+
+        window.loadStats = async function () {
             try {
+                console.log("Loading stats...");
                 const stats = await backend.getStats();
-                
+                console.log("Stats received:", stats);
+
                 document.getElementById('totalStaked').textContent = satsToBTC(stats.totalStaked);
                 document.getElementById('totalSupply').textContent = satsToBTC(stats.totalSupply);
-                document.getElementById('exchangeRate').textContent = stats.exchangeRate.toFixed(6);
-                document.getElementById('apy').textContent = (stats.apy * 100).toFixed(2);
-                
+                document.getElementById('exchangeRate').textContent = Number(stats.exchangeRate).toFixed(6);
+                document.getElementById('apy').textContent = (Number(stats.apy) * 100).toFixed(2);
+
                 // Load user balance
                 await loadUserBalance();
+
+                console.log("Stats loaded successfully!");
             } catch (error) {
                 console.error('Error loading stats:', error);
                 showStatus('Error loading stats: ' + error.message, 'error');
             }
         };
-        
+
         async function loadUserBalance() {
             try {
-                // Get current principal (user identity)
-                const principal = await window.ic.plug?.agent?.getPrincipal() || 
-                                await backend.__principal;
-                
-                if (principal) {
-                    const balance = await backend.getBalance(principal);
-                    const btcValue = await backend.getBTCValue(principal);
-                    
-                    document.getElementById('userStBTC').textContent = satsToBTC(balance);
-                    document.getElementById('userBTCValue').textContent = satsToBTC(btcValue);
-                }
+                console.log("Loading balance for Principal:", userPrincipal.toText());
+
+                const balance = await backend.getBalance(userPrincipal);
+                const btcValue = await backend.getBTCValue(userPrincipal);
+
+                console.log("Balance:", balance, "BTC Value:", btcValue);
+
+                document.getElementById('userStBTC').textContent = satsToBTC(balance);
+                document.getElementById('userBTCValue').textContent = satsToBTC(btcValue);
             } catch (error) {
                 console.error('Error loading user balance:', error);
+                // Don't show error to user - just log it
             }
         }
-        
+
         // ===== STAKE FORM =====
-        
+
         document.getElementById('stakeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const amountBTC = parseFloat(document.getElementById('stakeAmount').value);
+
+            if (!amountBTC || amountBTC <= 0) {
+                showStatus('❌ Please enter a valid amount', 'error');
+                return;
+            }
+
             const amountSats = btcToSats(amountBTC);
-            
+
+            console.log("Staking", amountSats, "sats");
+
             try {
                 const button = e.target.querySelector('button');
                 button.disabled = true;
                 button.textContent = 'Staking...';
-                
+
                 const result = await backend.stake(amountSats);
-                
+                console.log("Stake result:", result);
+
                 if ('ok' in result) {
                     showStatus('✅ ' + result.ok, 'success');
                     document.getElementById('stakeAmount').value = '';
-                    await loadStats();
+                    document.getElementById('stakePreview').style.display = 'none';
+
+                    // Wait a moment then refresh
+                    setTimeout(async () => {
+                        await loadStats();
+                    }, 500);
                 } else {
                     showStatus('❌ ' + result.err, 'error');
                 }
             } catch (error) {
+                console.error('Stake error:', error);
                 showStatus('❌ Error: ' + error.message, 'error');
             } finally {
-                const button = e.target.querySelector('button');
+                const button = e.target.querySelector('button[type="submit"]');
                 button.disabled = false;
                 button.textContent = 'Stake BTC → Get stBTC';
             }
         });
-        
+
         // Show preview when amount changes
         document.getElementById('stakeAmount').addEventListener('input', (e) => {
             const amount = e.target.value;
@@ -418,46 +432,61 @@
                 document.getElementById('stakePreview').style.display = 'none';
             }
         });
-        
+
         // ===== UNSTAKE FORM =====
-        
+
         document.getElementById('unstakeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const amountBTC = parseFloat(document.getElementById('unstakeAmount').value);
+
+            if (!amountBTC || amountBTC <= 0) {
+                showStatus('❌ Please enter a valid amount', 'error');
+                return;
+            }
+
             const amountSats = btcToSats(amountBTC);
-            
+
+            console.log("Unstaking", amountSats, "sats");
+
             try {
-                const button = e.target.querySelector('button');
+                const button = e.target.querySelector('button[type="submit"]');
                 button.disabled = true;
                 button.textContent = 'Unstaking...';
-                
+
                 const result = await backend.unstake(amountSats);
-                
+                console.log("Unstake result:", result);
+
                 if ('ok' in result) {
                     const btcReceived = satsToBTC(result.ok);
                     showStatus(`✅ Unstaked! Received ${btcReceived} BTC`, 'success');
                     document.getElementById('unstakeAmount').value = '';
-                    await loadStats();
+                    document.getElementById('unstakePreview').style.display = 'none';
+
+                    // Wait a moment then refresh
+                    setTimeout(async () => {
+                        await loadStats();
+                    }, 500);
                 } else {
                     showStatus('❌ ' + result.err, 'error');
                 }
             } catch (error) {
+                console.error('Unstake error:', error);
                 showStatus('❌ Error: ' + error.message, 'error');
             } finally {
-                const button = e.target.querySelector('button');
+                const button = e.target.querySelector('button[type="submit"]');
                 button.disabled = false;
                 button.textContent = 'Unstake stBTC → Get BTC';
             }
         });
-        
+
         // Show preview when amount changes
         document.getElementById('unstakeAmount').addEventListener('input', async (e) => {
             const amount = e.target.value;
             if (amount && amount > 0) {
                 try {
                     const rate = await backend.getExchangeRate();
-                    const btcWillGet = (parseFloat(amount) * rate).toFixed(8);
+                    const btcWillGet = (parseFloat(amount) * Number(rate)).toFixed(8);
                     document.getElementById('unstakeReceive').textContent = btcWillGet;
                     document.getElementById('unstakePreview').style.display = 'block';
                 } catch (error) {
@@ -467,42 +496,63 @@
                 document.getElementById('unstakePreview').style.display = 'none';
             }
         });
-        
-        window.setMaxUnstake = function() {
+
+        window.setMaxUnstake = function () {
             const maxAmount = document.getElementById('userStBTC').textContent;
             document.getElementById('unstakeAmount').value = maxAmount;
             document.getElementById('unstakeAmount').dispatchEvent(new Event('input'));
         };
-        
+
         // ===== SIMULATE TIME =====
-        
-        window.simulateTime = async function() {
+
+        window.simulateTime = async function () {
             const days = parseInt(document.getElementById('daysToSimulate').value);
-            
+
+            if (!days || days <= 0) {
+                showStatus('❌ Please enter valid number of days', 'error');
+                return;
+            }
+
+            console.log("Simulating", days, "days");
+
             try {
                 const button = event.target;
+                const originalText = button.textContent;
                 button.disabled = true;
                 button.textContent = 'Simulating...';
-                
+
                 await backend.simulateRewards(days);
+                console.log("Simulation complete");
+
                 showStatus(`✅ Simulated ${days} days of rewards!`, 'success');
-                await loadStats();
+
+                // Wait a moment then refresh
+                setTimeout(async () => {
+                    await loadStats();
+                    button.disabled = false;
+                    button.textContent = originalText;
+                }, 500);
             } catch (error) {
+                console.error('Simulate error:', error);
                 showStatus('❌ Error: ' + error.message, 'error');
-            } finally {
                 const button = event.target;
                 button.disabled = false;
                 button.textContent = '⏩ Fast-Forward Time';
             }
         };
-        
+
         // ===== INITIALIZE =====
-        
+
+        console.log("Initializing app...");
+
         // Load stats when page loads
         loadStats();
-        
+
         // Refresh every 10 seconds
         setInterval(loadStats, 10000);
+
+        console.log("App initialized!");
     </script>
 </body>
+
 </html>
