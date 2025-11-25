@@ -4,7 +4,7 @@
 
 **LiquidBTC** solves Bitcoin's staking liquidity problem. Stake your BTC, get liquid stBTC tokens, earn ~10% APY, and unstake anytime—no 6-12 month lock-ups.
 
-Built for the **ICP Bitcoin DeFi Hackathon** to showcase how ICP's native Bitcoin integration enables "Lido for Bitcoin."
+Built for the **ICP Bitcoin DeFi Hackathon** to showcase how ICP's native Bitcoin integration enables Lido like functionality but for Bitcoin
 
 ## 🎯 What It Does
 
@@ -99,7 +99,7 @@ icp-hackathon-2/
 └── README.md               # This file
 ```
 
-## 🔑 Key Features
+##  Key Features
 
 - ✅ Liquid staking (stake/unstake anytime)
 - ✅ 10% APY via exchange rate appreciation
